@@ -17,8 +17,7 @@ email=$username@owllabs.com
 read -r -p "Do you want to create $username ? [y/n] " response
 if [[ $response =~ [yY] ]]
   then
-      $gam create user $email firstname $firstname lastname $lastname password "temppassword" changepassword on
-      $gam user $username update backupcodes
+      $gam create user $email firstname $firstname lastname $lastname password random changepassword on
   else
       echo "Exiting"
       exit
@@ -32,7 +31,7 @@ if [[ $response =~ [yY] ]]
       $gam update group fulltimeperm@owllabs.com add member user $email
       echo "Moved user to top-level OU, adding to fulltimeperm@"
   else
-      $gam update org "/Restricted Users" add users $username
+      $gam update org "/Restricted Users" add users $usernamey
       $gam update group consultants@owllabs.com add member user $email
       echo "Moved user to Restricted Users OU, adding to consultants@"
       exit
