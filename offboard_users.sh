@@ -13,7 +13,7 @@ echo "Enter email address of forwarding recipient:"
 read forwardingemail
 
 #Confirm username before deprovisioning
-read -r -p "Do you want to deprovision $username ? [y/n] " response
+read -r -p "Do you want to deprovision $email ? [y/n] " response
 if [[ $response =~ [nN] ]]
   then
 		echo "Exiting"
@@ -21,7 +21,17 @@ if [[ $response =~ [nN] ]]
 fi
 
 ##Starting deprovision
-echo "Deprovisioning " $username
+echo "Deprovisioning " $email
+
+#Resetting cookies to sign user out of account
+echo "Resetting cookies to sign $email out of account"
+$gam user $email signout 
+echo "Reset cookies to sign out $email"| tee -a /tmp/$username.txt
+
+# Changing user's password to random
+echo "Changing "$email"'s password to something random"
+$gam update user $email password random | tee -a /tmp/$username.txt
+echo "Changed password"
 
 #Resetting cookies to sign user out of account
 echo "Resetting cookies to sign $username out of account"
@@ -39,13 +49,13 @@ echo "All app-specific passwords, 2SV backup codes, and OAuth tokens have been r
 
 # Removing user from all Google Groups
 echo "Gathering group information for $username"
-amount_of_groups="$($gam info user $username | grep "Groups: (" | sed 's/[^0-9]//g')"
+amount_of_groups="$($gam info user $email | grep "Groups: (" | sed 's/[^0-9]//g')"
 IFS=$'\n'
-groups_list=($($gam info user $username | grep -A $amount_of_groups Groups | grep -v Groups | sed 's/^[^<]*<//g' | sed 's/\@.*$//g'))
+groups_list=($($gam info user $email | grep -A $amount_of_groups Groups | grep -v Groups | sed 's/^[^<]*<//g' | sed 's/\@.*$//g'))
 unset IFS
 	for group_name in ${groups_list[@]}
 		do
-			$gam update group $group_name remove user $username && echo "Removed $username from $group_name"
+			$gam update group $group_name remove user $email && echo "Removed $email from $group_name"
 	done | tee -a /tmp/$username.txt
 
 # Setting email forwarding
