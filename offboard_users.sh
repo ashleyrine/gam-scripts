@@ -31,6 +31,16 @@ echo "Reset cookies to sign out $email"| tee -a /tmp/$username.txt
 # Changing user's password to random
 echo "Changing "$email"'s password to something random"
 $gam update user $email password random | tee -a /tmp/$username.txt
+echo "Changed password"
+
+#Resetting cookies to sign user out of account
+echo "Resetting cookies to sign $username out of account"
+$gam user $email signout 
+echo "Reset cookies to sign out $username"| tee -a /tmp/$username.txt
+
+# Changing user's password to random
+echo "Changing "$username"'s password to something random"
+$gam update user $username password random | tee -a /tmp/$username.txt
 
 # Revoking all application specific passwords, 2SV Backup Codes and OAuth Tokens
 echo "Revoking all application specific passwords, 2SV Backup Codes and OAuth Tokens"
