@@ -31,7 +31,7 @@ if [[ $response =~ [yY] ]]
       $gam update group fulltimeperm@owllabs.com add member user $email
       echo "Moved user to top-level OU, adding to fulltimeperm@"
   else
-      $gam update org "/Restricted Users" add users $usernamey
+      $gam update org "/Restricted Users" add users $username
       $gam update group consultants@owllabs.com add member user $email
       echo "Moved user to Restricted Users OU, adding to consultants@"
       exit
@@ -54,10 +54,11 @@ if [[ $response =~ [yY] ]]
 fi
 
 #engineering@
-read -r -p "Should this user be a member of engineering@ ? [y/n] " response
+read -r -p "Is this user part of the Engineering org ? [y/n] " response
 if [[ $response =~ [yY] ]]
   then
       $gam update group engineering@owllabs.com add user $username
+      $gam update user $email org "/Full Time Employees/Engineering"
       echo "Added user to engineering@"
   else
       echo "Not added to engineering@"
