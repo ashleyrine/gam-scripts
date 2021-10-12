@@ -59,9 +59,9 @@ if [[ $response =~ [yY] ]]
   then
       $gam update group engineering@owllabs.com add user $username
       $gam update user $email org "/Full Time Employees/Engineering"
-      echo "Added user to engineering@"
+      echo "Added user to engineering@, moved to Engineering OU"
   else
-      echo "Not added to engineering@"
+      echo "No changes made, exiting"
 fi
 
 echo "Account creation complete!"
