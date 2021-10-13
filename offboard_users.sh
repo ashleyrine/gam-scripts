@@ -4,7 +4,7 @@
 gam="$HOME/bin/gam/gam"
 
 # Enter user to deprovision
-echo "Enter username you wish to deprovision:"
+echo "Enter username you wish to deprovision (first.last without domain):"
 read username
 email=$username@owllabs.com
 
@@ -48,15 +48,9 @@ $gam user $email deprovision
 echo "All app-specific passwords, 2SV backup codes, and OAuth tokens have been revoked" | tee -a /tmp/$username.txt
 
 # Removing user from all Google Groups
-echo "Gathering group information for $username"
-amount_of_groups="$($gam info user $email | grep "Groups: (" | sed 's/[^0-9]//g')"
-IFS=$'\n'
-groups_list=($($gam info user $email | grep -A $amount_of_groups Groups | grep -v Groups | sed 's/^[^<]*<//g' | sed 's/\@.*$//g'))
-unset IFS
-	for group_name in ${groups_list[@]}
-		do
-			$gam update group $group_name remove user $email && echo "Removed $email from $group_name"
-	done | tee -a /tmp/$username.txt
+echo "Removing $username from all Google Groups"
+$gam user $email delete groups
+echo "Removed $username from all groups" | tee -a /tmp/$username.txt
 
 # Setting email forwarding
 echo "Setting email forwarding to $forwardingemail"
@@ -64,7 +58,5 @@ $gam user $email add forwardingaddress $forwardingemail
 $gam user $email forward on $forwardingemail keep
 echo "Successfully set email forwarding to $forwardingemail" | tee -a /tmp/$username.txt
 
-## Printing log location and uploading file to Drive
-$gam user ashley.rine@owllabs.com add drivefile localfile /tmp/$username.txt
+## Completion
 echo "Offboarding complete for $username"
-echo "Log file uploaded to Drive folder"

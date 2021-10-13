@@ -8,14 +8,14 @@ if [[ $response =~ [yY] ]]
       $gam update org "/Full Time Employees/Engineering" add users $username
       $gam update group engineering@owllabs.com add member user $email
       echo "Moved user to Engineering OU, added to engineering@"
+
   else
       echo "Exiting"
       exit
 fi
 
-
 #Marketing user flow
-read -r -p "Is this an Marketing user? [y/n] " response
+read -r -p "Is this a Marketing user? [y/n] " response
 if [[ $response =~ [yY] ]]
   then
       $gam update group marketing@owllabs.com add member user $email
