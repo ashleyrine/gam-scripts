@@ -42,6 +42,12 @@ echo "Reset cookies to sign out $username"| tee -a /tmp/$username.txt
 echo "Changing "$username"'s password to something random"
 $gam update user $username password random | tee -a /tmp/$username.txt
 
+# Changing account recovery info 
+echo "Changing "$username"'s account recovery info to TechOps-owned email and phone number"
+$gam update user $username recoveryemail techops-licensing@owllabs.com
+$gam update user $username recoveryphone 18574195147
+echo "Recovery email and phone have been updated" | tee -a /tmp/$username.txt
+
 # Revoking all application specific passwords, 2SV Backup Codes and OAuth Tokens
 echo "Revoking all application specific passwords, 2SV Backup Codes and OAuth Tokens"
 $gam user $email deprovision
