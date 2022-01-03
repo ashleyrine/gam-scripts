@@ -30,8 +30,8 @@ echo "Reset cookies to sign out $email"| tee -a /tmp/$username.txt
 
 # Changing user's password to random
 echo "Changing "$email"'s password to something random"
-$gam update user $email password random | tee -a /tmp/$username.txt
-echo "Changed password"
+$gam update user $email password random
+echo "Changed password" | tee -a /tmp/$username.txt
 
 #Resetting cookies to sign user out of account
 echo "Resetting cookies to sign $username out of account"
